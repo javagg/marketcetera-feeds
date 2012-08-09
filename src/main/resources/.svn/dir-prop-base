@@ -1,0 +1,16 @@
+K 10
+svn:ignore
+V 86
+profiles.xml
+*~
+#*#
+.classpath
+.project
+.settings
+*.ipr
+*.iws
+*.iml
+target
+*$py.class
+
+END

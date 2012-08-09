@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/!svn/ver/16172/root/tags/2.2.0/modules/marketdata/csv/src/main/resources/META-INF/services
+END
+org.marketcetera.module.ModuleFactory
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/!svn/ver/16172/root/tags/2.2.0/modules/marketdata/csv/src/main/resources/META-INF/services/org.marketcetera.module.ModuleFactory
+END
