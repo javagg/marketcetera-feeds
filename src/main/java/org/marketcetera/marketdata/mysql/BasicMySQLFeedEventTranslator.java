@@ -1,13 +1,5 @@
 package org.marketcetera.marketdata.mysql;
 
-import static org.marketcetera.marketdata.mysql.Messages.*;
-
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-
-import javax.annotation.concurrent.Immutable;
-
 import org.apache.commons.lang.StringUtils;
 import org.marketcetera.core.CoreException;
 import org.marketcetera.event.*;
@@ -23,6 +15,13 @@ import org.marketcetera.trade.Option;
 import org.marketcetera.util.log.I18NBoundMessage1P;
 import org.marketcetera.util.log.I18NBoundMessage2P;
 import org.marketcetera.util.log.I18NBoundMessage3P;
+
+import javax.annotation.concurrent.Immutable;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static org.marketcetera.marketdata.mysql.Messages.*;
 
 /* $License$ */
 

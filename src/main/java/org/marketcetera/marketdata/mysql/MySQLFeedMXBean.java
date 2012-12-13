@@ -1,8 +1,8 @@
 package org.marketcetera.marketdata.mysql;
 
-import org.marketcetera.util.misc.ClassVersion;
-import org.marketcetera.module.DisplayName;
 import org.marketcetera.marketdata.AbstractMarketDataModuleMXBean;
+import org.marketcetera.module.DisplayName;
+import org.marketcetera.util.misc.ClassVersion;
 
 import javax.management.MXBean;
 

@@ -1,11 +1,12 @@
 package org.marketcetera.marketdata.mysql;
 
-import static org.marketcetera.marketdata.mysql.Messages.PROVIDER_DESCRIPTION;
-import org.marketcetera.util.misc.ClassVersion;
-import org.marketcetera.module.ModuleFactory;
-import org.marketcetera.module.ModuleCreationException;
-import org.marketcetera.module.ModuleURN;
 import org.marketcetera.core.CoreException;
+import org.marketcetera.module.ModuleCreationException;
+import org.marketcetera.module.ModuleFactory;
+import org.marketcetera.module.ModuleURN;
+import org.marketcetera.util.misc.ClassVersion;
+
+import static org.marketcetera.marketdata.mysql.Messages.PROVIDER_DESCRIPTION;
 
 /**
  * <code>ModuleFactory</code> implementation for the <code>MySQLFeed</code> market data provider.

@@ -1,15 +1,15 @@
 package org.marketcetera.marketdata.mysql;
 
-import static org.marketcetera.marketdata.mysql.Messages.INVALID_EVENT_TRANSLATOR;
-
-import java.io.File;
-
 import org.apache.commons.lang.Validate;
 import org.marketcetera.marketdata.AbstractMarketDataFeedCredentials;
 import org.marketcetera.marketdata.FeedException;
 import org.marketcetera.util.log.I18NBoundMessage1P;
 import org.marketcetera.util.log.SLF4JLoggerProxy;
 import org.marketcetera.util.misc.ClassVersion;
+
+import java.io.File;
+
+import static org.marketcetera.marketdata.mysql.Messages.INVALID_EVENT_TRANSLATOR;
 
 /**
  * Encapsulates the data necessary to initialize an instance of {@link MySQLFeed}.

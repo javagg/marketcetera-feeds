@@ -1,16 +1,13 @@
 package org.marketcetera.marketdata.mysql;
 
-import static org.marketcetera.marketdata.Content.DIVIDEND;
-import static org.marketcetera.marketdata.Content.LATEST_TICK;
-import static org.marketcetera.marketdata.Content.MARKET_STAT;
-import static org.marketcetera.marketdata.Content.TOP_OF_BOOK;
-import static org.marketcetera.marketdata.Messages.UNSUPPORTED_REQUEST;
-
 import org.marketcetera.core.CoreException;
 import org.marketcetera.marketdata.DataRequestTranslator;
 import org.marketcetera.marketdata.MarketDataRequest;
 import org.marketcetera.util.log.I18NBoundMessage1P;
 import org.marketcetera.util.misc.ClassVersion;
+
+import static org.marketcetera.marketdata.Content.*;
+import static org.marketcetera.marketdata.Messages.UNSUPPORTED_REQUEST;
 
 /**
  * Translates {@link MarketDataRequest} objects to a format that the {@link MySQLFeed} can understand.

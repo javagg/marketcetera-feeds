@@ -1,9 +1,9 @@
 package org.marketcetera.marketdata.mysql;
 
-import java.util.Arrays;
-
 import org.marketcetera.marketdata.MarketDataRequest;
 import org.marketcetera.util.misc.ClassVersion;
+
+import java.util.Arrays;
 
 /* $License$ */
 

@@ -1,13 +1,11 @@
 package org.marketcetera.marketdata.mysql;
 
-import static org.marketcetera.marketdata.AssetClass.EQUITY;
-import static org.marketcetera.marketdata.AssetClass.FUTURE;
-import static org.marketcetera.marketdata.AssetClass.OPTION;
-import static org.marketcetera.marketdata.Capability.LATEST_TICK;
-import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
-import static org.marketcetera.marketdata.mysql.Messages.CANCEL_REQUEST_FAILED_HANDLE_NOT_FOUND;
-import static org.marketcetera.marketdata.mysql.Messages.FAILED_TO_START_REQUEST;
-import static org.marketcetera.marketdata.mysql.Messages.REQUEST_FAILED;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVStrategy;
+import org.marketcetera.core.NoMoreIDsException;
+import org.marketcetera.marketdata.*;
+import org.marketcetera.util.log.SLF4JLoggerProxy;
+import org.marketcetera.util.misc.ClassVersion;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,12 +15,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVStrategy;
-import org.marketcetera.core.NoMoreIDsException;
-import org.marketcetera.marketdata.*;
-import org.marketcetera.util.log.SLF4JLoggerProxy;
-import org.marketcetera.util.misc.ClassVersion;
+import static org.marketcetera.marketdata.AssetClass.*;
+import static org.marketcetera.marketdata.Capability.LATEST_TICK;
+import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
+import static org.marketcetera.marketdata.mysql.Messages.*;
 
 /**
  * Implementation of the market data feed that reads from a CSV file.
@@ -40,11 +36,11 @@ import org.marketcetera.util.misc.ClassVersion;
 @ClassVersion("$Id: MySQLFeed.java 16154 2012-07-14 16:34:05Z colin $")
 public class MySQLFeed
         extends AbstractMarketDataFeed<MySQLFeedToken,
-        MySQLFeedCredentials,
-        MySQLFeedMessageTranslator,
-        MySQLFeedEventTranslator,
-                                       MarketDataRequest,
-        MySQLFeed>
+                MySQLFeedCredentials,
+                MySQLFeedMessageTranslator,
+                MySQLFeedEventTranslator,
+                                               MarketDataRequest,
+                MySQLFeed>
 {
     /**
      * Returns an instance of <code>MySQLFeed</code>.

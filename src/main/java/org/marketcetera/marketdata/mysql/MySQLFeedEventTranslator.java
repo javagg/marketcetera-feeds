@@ -1,11 +1,11 @@
 package org.marketcetera.marketdata.mysql;
 
-import java.util.List;
-
 import org.marketcetera.core.CoreException;
 import org.marketcetera.event.Event;
 import org.marketcetera.event.EventTranslator;
 import org.marketcetera.util.misc.ClassVersion;
+
+import java.util.List;
 
 /**
  * Provides the base implementation of a CSV event translator.

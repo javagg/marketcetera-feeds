@@ -2,18 +2,15 @@ package org.marketcetera.marketdata.ctp;
 
 import org.marketcetera.core.NoMoreIDsException;
 import org.marketcetera.marketdata.*;
-import org.marketcetera.marketdata.mysql.MySQLFeedEventTranslator;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-
 import static org.marketcetera.marketdata.AssetClass.FUTURE;
 import static org.marketcetera.marketdata.Capability.LATEST_TICK;
 import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
-
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,8 +22,11 @@ import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
 public class CtpFeed  extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredentials,
         CtpFeedMessageTranslator,CtpFeedEventTranslator, MarketDataRequest, CtpFeed> {
     private final CtpFeedEventTranslator eventTranslator;
-    private final CtpFeedMessageTranslator messageTranslator ;
+    private final CtpFeedMessageTranslator messageTranslator;
+    private CtpFeedCredentials credentials;
+
     /**
+     *
      * Create a new <code>AbstractMarketDataFeed</code> instance.
      *
      * @param inFeedType     a <code>FeedType</code> value
@@ -60,17 +60,18 @@ public class CtpFeed  extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCreden
      * @see DataRequestTranslator#fromDataRequest(MarketDataRequest)
      */
     @Override
-    protected List<String> doMarketDataRequest(MarketDataRequest inData) throws FeedException {
-//        List<String> handleList = new ArrayList<String>();
-//        for(String filename : inData.getSymbols()) {
-//            CsvFeedRequest request = new CsvFeedRequest(filename,
+    protected synchronized List<String> doMarketDataRequest(MarketDataRequest inData) throws FeedException {
+        List<String> symbols = new ArrayList<String>();
+        for(String symbol : inData.getSymbols()) {
+            symbols.add(symbol);
+//            CsvFeedRequest request = new CsvFeedRequest(symbol,
 //                    inData);
 //            String handle = request.getHandle();
 //            handleList.add(handle);
 //            requests.put(handle,
 //                    request);
-//        }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+        return symbols;
     }
 
     @Override
@@ -79,22 +80,35 @@ public class CtpFeed  extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCreden
     }
 
     @Override
-    protected boolean isLoggedIn() {
+    protected synchronized boolean isLoggedIn() {
         return false;
     }
 
     @Override
     protected boolean doLogin(CtpFeedCredentials inCredentials) {
-        return false;
+        credentials = inCredentials;
+        try {
+            synchronized(this) {
+                setFeedStatus(FeedStatus.OFFLINE);
+//                provider.connect(true);
+                if(!getFeedStatus().equals(FeedStatus.AVAILABLE)) {
+                    throw new FeedException(Messages.CONNECT_NOT_START);
+                }
+//                setIsRunning(true);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     protected void doLogout() {
-
+//        provider.disconnect(true);
     }
 
     @Override
-    protected void doCancel(String inHandle) {
+    protected synchronized void doCancel(String inHandle) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
