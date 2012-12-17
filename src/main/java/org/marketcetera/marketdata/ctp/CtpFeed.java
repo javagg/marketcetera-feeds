@@ -1,26 +1,26 @@
 package org.marketcetera.marketdata.ctp;
 
-import org.marketcetera.core.NoMoreIDsException;
-import org.marketcetera.marketdata.*;
+import static org.marketcetera.marketdata.AssetClass.FUTURE;
+import static org.marketcetera.marketdata.Capability.LATEST_TICK;
+import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.marketcetera.marketdata.AssetClass.FUTURE;
-import static org.marketcetera.marketdata.Capability.LATEST_TICK;
-import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
+import org.marketcetera.core.NoMoreIDsException;
+import org.marketcetera.marketdata.AbstractMarketDataFeed;
+import org.marketcetera.marketdata.AssetClass;
+import org.marketcetera.marketdata.Capability;
+import org.marketcetera.marketdata.DataRequestTranslator;
+import org.marketcetera.marketdata.FeedException;
+import org.marketcetera.marketdata.FeedStatus;
+import org.marketcetera.marketdata.MarketDataFeedTokenSpec;
+import org.marketcetera.marketdata.MarketDataRequest;
 
-/**
- * Created with IntelliJ IDEA.
- * User: alex
- * Date: 12-12-13
- * Time: 上午12:53
- * To change this template use File | Settings | File Templates.
- */
-public class CtpFeed  extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredentials,
-        CtpFeedMessageTranslator,CtpFeedEventTranslator, MarketDataRequest, CtpFeed> {
+public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredentials,
+        CtpFeedMessageTranslator, CtpFeedEventTranslator, MarketDataRequest, CtpFeed> {
     private final CtpFeedEventTranslator eventTranslator;
     private final CtpFeedMessageTranslator messageTranslator;
     private CtpFeedCredentials credentials;

@@ -1,13 +1,13 @@
 package org.marketcetera.marketdata.ctp;
 
+import java.util.Set;
+
 import org.marketcetera.core.CoreException;
 import org.marketcetera.marketdata.AbstractMarketDataModule;
 import org.marketcetera.marketdata.AssetClass;
 import org.marketcetera.marketdata.Capability;
 import org.marketcetera.marketdata.MarketDataFeed;
 import org.marketcetera.module.ModuleURN;
-
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.

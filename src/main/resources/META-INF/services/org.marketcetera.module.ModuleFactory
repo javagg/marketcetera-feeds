@@ -1,2 +1,2 @@
 #Names of module factory implementations
-org.marketcetera.marketdata.csv.CSVFeedModuleFactory
+org.marketcetera.marketdata.ctp.CtpFeedModuleFactory
