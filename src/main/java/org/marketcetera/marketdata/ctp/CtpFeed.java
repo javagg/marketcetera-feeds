@@ -18,13 +18,21 @@ import org.marketcetera.marketdata.FeedException;
 import org.marketcetera.marketdata.FeedStatus;
 import org.marketcetera.marketdata.MarketDataFeedTokenSpec;
 import org.marketcetera.marketdata.MarketDataRequest;
+import org.marketcetera.util.log.SLF4JLoggerProxy;
 
 public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredentials,
         CtpFeedMessageTranslator, CtpFeedEventTranslator, MarketDataRequest, CtpFeed> {
-    private final CtpFeedEventTranslator eventTranslator;
-    private final CtpFeedMessageTranslator messageTranslator;
+    private final CtpFeedEventTranslator eventTranslator = new CtpFeedEventTranslator();
+    private final CtpFeedMessageTranslator messageTranslator = new CtpFeedMessageTranslator();
     private CtpFeedCredentials credentials;
-
+    
+    private Object ctpMdProvider = null;
+    
+    @Override
+    public String toString() {
+        return String.format("CtpFeed");
+    }
+    
     /**
      *
      * Create a new <code>AbstractMarketDataFeed</code> instance.
@@ -37,8 +45,6 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
      */
     protected CtpFeed(FeedType inFeedType, String inProviderName) throws NoMoreIDsException {
         super(inFeedType, inProviderName);
-        eventTranslator = null;
-        messageTranslator = null;
     }
 
     @Override
@@ -71,9 +77,46 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
 //            requests.put(handle,
 //                    request);
         }
+        SLF4JLoggerProxy.debug(CtpFeed.class, "CtpFeed stopping exchange {}..." , symbols.toString());
+        System.out.println(symbols.toString());
         return symbols;
     }
 
+    @Override
+	public synchronized void start() {
+        if(isRunning()) {
+            throw new IllegalStateException();
+        }
+//        for(int i=0;i<EXCHANGE_COUNT;i++) {
+//            SimulatedExchange exchange = new SimulatedExchange(String.format("%s-%d", //$NON-NLS-1$
+//                                                                             getProviderName(),
+//                                                                             i+1),
+//                                                               String.format("BGS%d", //$NON-NLS-1$
+//                                                                             i+1));
+//            SLF4JLoggerProxy.debug(BogusFeed.class,
+//                                   "BogusFeed starting exchange {}...", //$NON-NLS-1$
+//                                   exchange.getCode());
+//            exchange.start();
+//            exchanges.put(exchange.getCode(),
+//                          exchange);
+//        }
+        super.start();
+	}
+    
+    @Override
+    public synchronized void stop() {
+        if(!isRunning()) {
+            throw new IllegalStateException();
+        }
+//        for(SimulatedExchange exchange : exchanges.values()) {
+//            SLF4JLoggerProxy.debug(BogusFeed.class,
+//                                   "BogusFeed stopping exchange {}...", //$NON-NLS-1$
+//                                   exchange.getCode());
+//            exchange.stop();
+//        }
+        super.stop();
+    }
+    
     @Override
     protected CtpFeedMessageTranslator getMessageTranslator() {
         return messageTranslator;
@@ -81,30 +124,31 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
 
     @Override
     protected synchronized boolean isLoggedIn() {
-        return false;
+        return mLoggedIn;
     }
 
     @Override
     protected boolean doLogin(CtpFeedCredentials inCredentials) {
         credentials = inCredentials;
-        try {
-            synchronized(this) {
-                setFeedStatus(FeedStatus.OFFLINE);
-//                provider.connect(true);
-                if(!getFeedStatus().equals(FeedStatus.AVAILABLE)) {
-                    throw new FeedException(Messages.CONNECT_NOT_START);
-                }
-//                setIsRunning(true);
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        mLoggedIn = true;
+//        try {
+//            synchronized(this) {
+//                setFeedStatus(FeedStatus.OFFLINE);
+////                provider.connect(true);
+//                if(!getFeedStatus().equals(FeedStatus.AVAILABLE)) {
+//                    throw new FeedException(Messages.CONNECT_NOT_START);
+//                }
+////                setIsRunning(true);
+//            }
+//        } catch (Exception e) {
+//            return false;
+//        }
         return true;
     }
 
     @Override
     protected void doLogout() {
-//        provider.disconnect(true);
+        mLoggedIn = false;
     }
 
     @Override
@@ -119,11 +163,19 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
 
     @Override
     public Set<Capability> getCapabilities() {
-        return EnumSet.of(TOP_OF_BOOK,LATEST_TICK);
+        return EnumSet.of(TOP_OF_BOOK, LATEST_TICK);
     }
 
     @Override
     public Set<AssetClass> getSupportedAssetClasses() {
-        return EnumSet.of(FUTURE);
+        return EnumSet.of(AssetClass.EQUITY, AssetClass.FUTURE);
     }
+    
+    private void dataReceCall() {
+    	String inHandle = null;
+    	Object inData = null;
+    	dataReceived(inHandle, inData);
+    }
+    
+    private boolean mLoggedIn = false;
 }
