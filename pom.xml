@@ -22,11 +22,21 @@
   	  <artifactId>core</artifactId>
   	  <version>2.2.0</version>
   	</dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.marketcetera</groupId>-->
+      <!--<artifactId>strategy</artifactId>-->
+      <!--<version>2.2.0</version>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-csv</artifactId>
     </dependency>
-    <!-- Runtime. -->
+      <dependency>
+          <groupId>org.marketcetera</groupId>
+          <artifactId>strategy</artifactId>
+          <version>2.2.0</version>
+      </dependency>
+      <!-- Runtime. -->
     <!-- Testing. -->
   </dependencies>
 

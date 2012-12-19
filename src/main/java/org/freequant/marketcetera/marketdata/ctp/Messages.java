@@ -1,4 +1,4 @@
-package org.marketcetera.marketdata.ctp;
+package org.freequant.marketcetera.marketdata.ctp;
 
 import org.marketcetera.util.log.I18NLoggerProxy;
 import org.marketcetera.util.log.I18NMessage0P;

@@ -1,4 +1,4 @@
-package org.marketcetera.marketdata.ctp;
+package org.freequant.marketcetera.marketdata.ctp;
 
 import org.marketcetera.core.CoreException;
 import org.marketcetera.marketdata.DataRequestTranslator;

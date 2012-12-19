@@ -1,6 +1,6 @@
-package org.marketcetera.marketdata.ctp;
+package org.freequant.marketcetera.marketdata.ctp;
 
-import static org.marketcetera.marketdata.ctp.Messages.PROVIDER_DESCRIPTION;
+import static org.freequant.marketcetera.marketdata.ctp.Messages.PROVIDER_DESCRIPTION;
 
 import org.marketcetera.core.CoreException;
 import org.marketcetera.module.Module;

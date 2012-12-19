@@ -1,0 +1,6 @@
+# Create the strategy
+createModule;metc:strategy:system;ctpReceiver,MarketData,JAVA,samples/java/CtpReceiver.java,,false,metc:sink:system
+# Start the market data module
+startModule;metc:mdata:ctp:single
+# Start the strategy
+startModule;metc:strategy:system:ctpReceiver

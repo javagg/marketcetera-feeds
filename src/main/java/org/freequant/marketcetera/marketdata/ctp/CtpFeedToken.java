@@ -1,4 +1,4 @@
-package org.marketcetera.marketdata.ctp;
+package org.freequant.marketcetera.marketdata.ctp;
 
 import org.marketcetera.marketdata.AbstractMarketDataFeedToken;
 import org.marketcetera.marketdata.MarketDataFeedTokenSpec;

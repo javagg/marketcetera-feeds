@@ -1,6 +1,5 @@
-package org.marketcetera.marketdata.ctp;
+package org.freequant.marketcetera.marketdata.ctp;
 
-import static org.marketcetera.marketdata.AssetClass.FUTURE;
 import static org.marketcetera.marketdata.Capability.LATEST_TICK;
 import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
 
@@ -15,7 +14,6 @@ import org.marketcetera.marketdata.AssetClass;
 import org.marketcetera.marketdata.Capability;
 import org.marketcetera.marketdata.DataRequestTranslator;
 import org.marketcetera.marketdata.FeedException;
-import org.marketcetera.marketdata.FeedStatus;
 import org.marketcetera.marketdata.MarketDataFeedTokenSpec;
 import org.marketcetera.marketdata.MarketDataRequest;
 import org.marketcetera.util.log.SLF4JLoggerProxy;
