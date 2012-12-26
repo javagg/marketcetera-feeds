@@ -11,7 +11,6 @@ import org.marketcetera.event.UnsupportedEventException;
 import org.marketcetera.util.log.I18NBoundMessage1P;
 
 public class CtpFeedEventTranslator implements EventTranslator {
-    @Override
     public List<Event> toEvent(Object inData, String inHandle) throws CoreException {
         if (!(inData instanceof Event)) {
             throw new UnsupportedEventException(new I18NBoundMessage1P(Messages.UNKNOWN_EVENT_TYPE, 
@@ -21,7 +20,6 @@ public class CtpFeedEventTranslator implements EventTranslator {
         return Arrays.asList(new Event[] { event });
     }
 
-    @Override
     public Object fromEvent(Event inEvent) throws CoreException {
     	Object object = new Object();
         return object;
