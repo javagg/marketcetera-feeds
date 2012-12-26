@@ -3,20 +3,35 @@ package org.freequant.marketcetera.marketdata.ctp;
 import static org.marketcetera.marketdata.Capability.LATEST_TICK;
 import static org.marketcetera.marketdata.Capability.TOP_OF_BOOK;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.marketcetera.core.NoMoreIDsException;
+import org.marketcetera.core.publisher.ISubscriber;
+import org.marketcetera.core.publisher.PublisherEngine;
+import org.marketcetera.event.BidEvent;
+import org.marketcetera.event.Event;
+import org.marketcetera.event.impl.MarketstatEventBuilder;
+import org.marketcetera.event.impl.QuoteEventBuilder;
 import org.marketcetera.marketdata.AbstractMarketDataFeed;
 import org.marketcetera.marketdata.AssetClass;
 import org.marketcetera.marketdata.Capability;
 import org.marketcetera.marketdata.DataRequestTranslator;
+import org.marketcetera.marketdata.DateUtils;
 import org.marketcetera.marketdata.FeedException;
 import org.marketcetera.marketdata.MarketDataFeedTokenSpec;
 import org.marketcetera.marketdata.MarketDataRequest;
+import org.marketcetera.trade.Equity;
 import org.marketcetera.util.log.SLF4JLoggerProxy;
+
+import org.freequant.CtpMarketDataProvider1;
 
 public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredentials,
         CtpFeedMessageTranslator, CtpFeedEventTranslator, MarketDataRequest, CtpFeed> {
@@ -24,7 +39,7 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
     private final CtpFeedMessageTranslator messageTranslator = new CtpFeedMessageTranslator();
     private CtpFeedCredentials credentials;
     
-    private Object ctpMdProvider = null;
+    private CtpMarketDataProvider1 ctpMdProvider = null;
     
     @Override
     public String toString() {
@@ -85,6 +100,35 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
         if(isRunning()) {
             throw new IllegalStateException();
         }
+        
+        ticker = executor.scheduleAtFixedRate(new Runnable() {
+            public void run() {
+            	List<Event> events = new ArrayList<Event>();
+            	
+            	QuoteEventBuilder<BidEvent> builder = QuoteEventBuilder.bidEvent(new Equity("IF1301"));
+            	builder.withPrice(new BigDecimal(122.0));
+//            	MarketstatEventBuilder builder = MarketstatEventBuilder.marketstat(new Equity("IF1301"));
+//                builder.withOpenPrice(new BigDecimal(122.0))
+//                	.withHighPrice(new BigDecimal(134.0))
+//                	.withLowPrice(new BigDecimal(109.0))
+//                	.withClosePrice(new BigDecimal(123.0));
+                events.add(builder.create());
+                
+//                    eventsToPublish.addAll(settleBook(inBook));
+                    // produce statistics
+//                    eventsToPublish.addAll(getStatistics(ExchangeRequestBuilder.newRequest().withInstrument(inBook.getBook().getInstrument())
+//                                                                                            .withUnderlyingInstrument(inBook.getUnderlyingInstrument()).create()));
+//                    if(inBook.getInstrument() instanceof Equity) {
+//                        eventsToPublish.addAll(getDividends(ExchangeRequestBuilder.newRequest().withInstrument(inBook.getBook().getInstrument()).create()));
+//                    }
+//                    publishEvents(eventsToPublish);
+                    for(Event event : events) {
+                        publisher.publish(event);
+                    }
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+
+        
 //        for(int i=0;i<EXCHANGE_COUNT;i++) {
 //            SimulatedExchange exchange = new SimulatedExchange(String.format("%s-%d", //$NON-NLS-1$
 //                                                                             getProviderName(),
@@ -98,6 +142,19 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
 //            exchanges.put(exchange.getCode(),
 //                          exchange);
 //        }
+        
+        publisher.subscribe(new ISubscriber() {
+			@Override
+			public boolean isInteresting(Object inData) {
+				return true;
+			}
+
+			@Override
+			public void publishTo(Object inData) {
+                SLF4JLoggerProxy.debug(CtpFeed.class, "CtpFeed publishTo {}", inData);
+                dataReceived("IF1301", inData);
+			}
+        });
         super.start();
 	}
     
@@ -106,12 +163,10 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
         if(!isRunning()) {
             throw new IllegalStateException();
         }
-//        for(SimulatedExchange exchange : exchanges.values()) {
-//            SLF4JLoggerProxy.debug(BogusFeed.class,
-//                                   "BogusFeed stopping exchange {}...", //$NON-NLS-1$
-//                                   exchange.getCode());
-//            exchange.stop();
-//        }
+        if (ticker != null) {
+        	ticker.cancel(true);
+            executor.purge();
+        }
         super.stop();
     }
     
@@ -169,11 +224,9 @@ public class CtpFeed extends AbstractMarketDataFeed<CtpFeedToken, CtpFeedCredent
         return EnumSet.of(AssetClass.EQUITY, AssetClass.FUTURE);
     }
     
-    private void dataReceCall() {
-    	String inHandle = null;
-    	Object inData = null;
-    	dataReceived(inHandle, inData);
-    }
-    
+    public ISubscriber subscriber = null;
     private boolean mLoggedIn = false;
+    private static final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+    private volatile ScheduledFuture<?> ticker = null;
+    private static final PublisherEngine publisher = new PublisherEngine(true);
 }

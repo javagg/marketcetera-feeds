@@ -1,57 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.freequant.marketcetera.marketdata</groupId>
+	<artifactId>ctp</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+	<name>marketdata-ctp</name>
+	<url>http://www.freequant.org</url>
 
-  <parent>
-    <groupId>org.marketcetera</groupId>
-    <artifactId>marketdata</artifactId>
-    <version>2.2.0</version>
-  </parent>
+	<dependencies>
+		<!-- Compile. -->
+		<dependency>
+			<groupId>org.marketcetera</groupId>
+			<artifactId>core</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.marketcetera</groupId>
+			<artifactId>strategy</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freequant</groupId>
+			<artifactId>freequant</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<!-- Runtime. -->
+		<!-- Testing. -->
+	</dependencies>
 
-  <groupId>org.freequant.marketcetera.marketdata</groupId>
-  <artifactId>ctp</artifactId>
-  <version>0.0.1</version>
-  <packaging>jar</packaging>
-  <name>marketdata-ctp</name>
-  <url>http://www.freequant.org</url>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 
-  <dependencies>
-    <!-- Compile. -->
-    <dependency>
-  	  <groupId>org.marketcetera</groupId>
-  	  <artifactId>core</artifactId>
-  	  <version>2.2.0</version>
-  	</dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.marketcetera</groupId>-->
-      <!--<artifactId>strategy</artifactId>-->
-      <!--<version>2.2.0</version>-->
-    <!--</dependency>-->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-csv</artifactId>
-    </dependency>
-      <dependency>
-          <groupId>org.marketcetera</groupId>
-          <artifactId>strategy</artifactId>
-          <version>2.2.0</version>
-      </dependency>
-      <!-- Runtime. -->
-    <!-- Testing. -->
-  </dependencies>
-
-    <build>
-      <plugins>
-        <!-- Configure Eclipse IDE metadata. -->
-        <plugin>
-          <artifactId>maven-eclipse-plugin</artifactId>
-          <configuration>
-            <pde>true</pde>
-            <manifest>null</manifest>
-            <resolveDependencies>false</resolveDependencies>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
-
-</project>
+<!-- 			<plugin> -->
+<!-- 				<artifactId>maven-eclipse-plugin</artifactId> -->
+<!-- 				<configuration> -->
+<!-- 					<pde>true</pde> -->
+<!-- 					<manifest>null</manifest> -->
+<!-- 					<resolveDependencies>false</resolveDependencies> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+		</plugins>
+	</build>
+</project> 

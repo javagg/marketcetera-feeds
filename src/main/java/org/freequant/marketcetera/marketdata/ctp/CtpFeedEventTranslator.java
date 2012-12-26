@@ -1,17 +1,24 @@
 package org.freequant.marketcetera.marketdata.ctp;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.marketcetera.core.CoreException;
 import org.marketcetera.event.Event;
 import org.marketcetera.event.EventTranslator;
+import org.marketcetera.event.UnsupportedEventException;
+import org.marketcetera.util.log.I18NBoundMessage1P;
 
 public class CtpFeedEventTranslator implements EventTranslator {
     @Override
     public List<Event> toEvent(Object inData, String inHandle) throws CoreException {
-    	List<Event> events = new ArrayList<Event>();
-    	return events;
+        if (!(inData instanceof Event)) {
+            throw new UnsupportedEventException(new I18NBoundMessage1P(Messages.UNKNOWN_EVENT_TYPE, 
+            	ObjectUtils.toString(inData, null)));
+        }
+        Event event = (Event)inData;
+        return Arrays.asList(new Event[] { event });
     }
 
     @Override

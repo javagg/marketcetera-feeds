@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 import org.marketcetera.core.CoreException;
 import org.marketcetera.marketdata.AbstractMarketDataModule;
@@ -11,44 +12,37 @@ import org.marketcetera.marketdata.MarketDataFeed;
 import org.marketcetera.module.ModuleURN;
 
 public class CtpFeedModule extends AbstractMarketDataModule<CtpFeedToken, CtpFeedCredentials> implements CtpFeedMXBean {
-    static private void loadDll(final String filename) throws IOException {
-  		  InputStream in = CtpFeedModule.class.getClass().getResource(filename).openStream();
-  		  File dll = File.createTempFile(filename, ".dll");
-  		  FileOutputStream out = new FileOutputStream(dll); 
+    static private void loadLib(final String name) throws IOException {
+    	String suffix = "";
+    	String osName = System.getProperty("os.name");
+    	if (osName.substring(0, 7).equals("Windows")) {
+    		suffix = ".dll";
+    	} else if (osName.equals("Linux")) {
+    		suffix = ".so";
+		}
+		InputStream in = CtpFeedModule.class.getClass().getResource("/" + name + suffix).openStream();
+		File lib = File.createTempFile(name, suffix);
+		FileOutputStream out = new FileOutputStream(lib);
 
-  		  int i;
-  		  byte [] buf = new byte[1024];
-  		  while((i=in.read(buf))!=-1) {
-  		   out.write(buf,0,i);
-  		  }
-        
-  		  in.close();
-  		  out.close();
-  		  dll.deleteOnExit();
-  		  System.load(dll.toString());
+		int i;
+		byte[] buf = new byte[1024];
+		while ((i = in.read(buf)) != -1) {
+			out.write(buf, 0, i);
+		}
+
+		in.close();
+		out.close();
+		lib.deleteOnExit();
+		System.load(lib.toString());
+		System.loadLibrary(lib.toString());
     }
+    
 	static {
-    	try {
-    		loadDll("libfreequant");
-//    		  InputStream in = CtpFeedModule.class.getClass().getResource("/NTV.dll").openStream();
-//    		  File dll = File.createTempFile("NTV", ".dll");
-//    		  FileOutputStream out = new FileOutputStream(dll); 
-//
-//    		  int i;
-//    		  byte [] buf = new byte[1024];
-//    		  while((i=in.read(buf))!=-1) {
-//    		   out.write(buf,0,i);
-//    		  }
-//    		  
-//    		  in.close();
-//    		  out.close();
-//    		  dll.deleteOnExit();
-//    		 
-//    		  System.load(dll.toString());// 
-    		
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
+//    	try {
+//    		loadLib("thostmduserapi");
+//    	} catch (Exception e) {
+//    		e.printStackTrace();
+//    	}
     }
 	
 	protected CtpFeedModule(ModuleURN inInstanceURN, MarketDataFeed<CtpFeedToken, CtpFeedCredentials> inFeed) {
