@@ -28,7 +28,14 @@
 			<artifactId>freequant</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+    </dependencies>
+
 
 	<build>
 		<plugins>
@@ -40,6 +47,35 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <configuration>
+                    <verbose>true</verbose>
+                    <privateScope>true</privateScope>
+                    <showWeaveInfo>false</showWeaveInfo>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <complianceLevel>1.5</complianceLevel>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>       <!-- use this goal to weave all your main classes -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 	  <repositories>  
